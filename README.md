@@ -3,7 +3,7 @@
 ```bash
 
 #pour le backend
-cd TodoListe
+
 npm install #pour installer les dependences
 npm run prisma:setup #pour migrerla base
  npm run seed #pour initialiser les donnees essss kham lima wakhhh
@@ -60,7 +60,7 @@ TodoListe est une application web complète de gestion de tâches avec système 
 - **Dashboard** : Vue d'ensemble de toutes les tâches
 - **Interface Responsive** : Design moderne avec Tailwind CSS
 
-### 🕒 Fonctionnalités Temporelles Avancées
+###  Fonctionnalités Temporelles Avancées
 
 #### Gestion des Dates
 - **Date de Début** : Planification du commencement des tâches
@@ -74,7 +74,7 @@ TodoListe est une application web complète de gestion de tâches avec système 
 - **Indicateurs Visuels** : Badges spéciaux pour les tâches auto-complétées
 - **Transparence** : Explication claire du pourquoi de la complétion
 
-## 🏗️ Architecture du Projet
+## Architecture du Projet
 
 ```
 TodoListe/

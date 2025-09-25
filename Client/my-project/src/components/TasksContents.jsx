@@ -12,7 +12,7 @@ const TasksContents = ({ tasks = [], loading = false, error = null, showActions 
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(() => getPageFromSearchParams(searchParams));
-  const tasksPerPage = 6;
+  const tasksPerPage = 3;
 
   const filtered = filterTasks(tasks, { searchTerm, statusFilter });
   const { totalPages, currentTasks, startIndex, endIndex } = paginateArray(filtered, page, tasksPerPage);
