@@ -44,7 +44,6 @@ export class TaskRepository {
         });
         return tasks;
     }
-    // Paginated retrieval of tasks related to a user (owner or allowed)
     async findUserTasksPaginated(userId, page = 1, limit = 10) {
         const { skip, take } = getPagination(page, limit);
         const where = {
@@ -70,7 +69,7 @@ export class TaskRepository {
             where: { id },
             include: {
                 allowedUsers: true,
-                user: true // Inclure les informations du propriétaire
+                user: true
             }
         });
     }

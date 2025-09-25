@@ -4,11 +4,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src --exec \"node --loader ts-node/esm src/server.ts\"",
+    "dev": "nodemon",
+    "dev:debug": "nodemon --inspect",
     "start": "node --loader ts-node/esm src/server.ts",
     "build": "npx tsc",
     "serve": "node dist/server.js",
     "dev-build": "npm run build && npm run serve",
+    "prisma:setup": "npx prisma generate && npx prisma migrate dev",
+    "seed": "npx ts-node --esm prisma/seed.ts",
+    "prisma:studio": "npx prisma studio",
+    "prisma:reset": "npx prisma migrate reset",
+    "prisma:generate": "npx prisma generate",
+    "clean": "rm -rf dist node_modules/.cache",
+    "install:all": "npm install && cd Client/my-project && npm install && cd ..",
+    "dev:full": "npm run dev & cd Client/my-project && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -38,6 +47,7 @@
     "nodemon": "^3.1.10",
     "prisma": "^6.15.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }

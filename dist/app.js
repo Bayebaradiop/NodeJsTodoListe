@@ -21,7 +21,6 @@ app.use("/api/tasks", classeRoutes);
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 // Tâche programmée pour l'auto-complétion des tâches expirées
 const taskService = new TaskService();
-// Vérifier les tâches expirées toutes les 60 secondes
 setInterval(async () => {
     try {
         console.log('🔄 Vérification automatique des tâches expirées...');

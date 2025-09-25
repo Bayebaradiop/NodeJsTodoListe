@@ -33,7 +33,6 @@ export class TaskService {
     async updateEtat(id, etat) {
         return await taskrepository.updateEtat(id, etat);
     }
-    // Méthode utilitaire pour calculer la durée d'une tâche
     calculateDuration(startDate, endDate) {
         if (!startDate || !endDate) {
             return null;
@@ -55,24 +54,19 @@ export class TaskService {
             return `${diffMinutes}min`;
         }
     }
-    // Vérifier et mettre à jour automatiquement les tâches expirées
     async autoCompleteExpiredTasks(tasks) {
         const now = new Date();
         const updatedTasks = [];
         for (const task of tasks) {
             let updatedTask = { ...task };
-            // Si la tâche n'est pas déjà terminée et a une date de fin passée
             if (task.etat !== 'TERMINER' && task.endDate && new Date(task.endDate) < now) {
                 try {
-                    // Mettre à jour le statut en TERMINER
                     updatedTask = await this.updateEtat(task.id, 'TERMINER');
-                    // Ajouter l'indicateur d'auto-complétion et la durée
                     updatedTask.autoCompleted = true;
                     updatedTask.duration = this.calculateDuration(updatedTask.startDate, updatedTask.endDate);
                 }
                 catch (error) {
                     console.error(`Erreur lors de l'auto-complétion de la tâche ${task.id}:`, error);
-                    // En cas d'erreur, garder la tâche originale
                 }
             }
             updatedTasks.push(updatedTask);
