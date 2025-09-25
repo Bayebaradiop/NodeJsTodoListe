@@ -11,8 +11,8 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
 
   if (authHeader && authHeader.startsWith("Bearer ")) {
     token = authHeader.split(" ")[1];
-  } else if ((req as any).cookies && ((req as any).cookies.token || (req as any).cookies.acces_token)) {
-    token = (req as any).cookies.token || (req as any).cookies.acces_token;
+  } else if (req.cookies && (req.cookies.token || req.cookies.acces_token)) {
+    token =req.cookies.token || req.cookies.acces_token;
   } else {
     return res.status(401).json({ message: "Token missing" });
   }

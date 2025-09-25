@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { getPagination } from "../services/paginator.service.js";
 import { string } from "zod";
 const prisma = new PrismaClient();
 export class TaskRepository {
@@ -8,12 +9,69 @@ export class TaskRepository {
         });
     }
     async findAll() {
-        return await prisma.task.findMany();
+        return await prisma.task.findMany({
+            include: {
+                user: true,
+                allowedUsers: true
+            }
+        });
+    }
+    async findAllPaginated(page = 1, limit = 10) {
+        const { skip, take } = getPagination(page, limit);
+        const [data, total] = await prisma.$transaction([
+            prisma.task.findMany({
+                skip,
+                take,
+                orderBy: { createdAt: 'desc' },
+                include: { user: true, allowedUsers: true }
+            }),
+            prisma.task.count()
+        ]);
+        return { data, total };
+    }
+    async findUserTasks(userId) {
+        const tasks = await prisma.task.findMany({
+            where: {
+                OR: [
+                    { userId: userId }, // Tâches créées par l'utilisateur
+                    { allowedUsers: { some: { id: userId } } } // Tâches où l'utilisateur a des permissions
+                ]
+            },
+            include: {
+                user: true,
+                allowedUsers: true
+            }
+        });
+        return tasks;
+    }
+    // Paginated retrieval of tasks related to a user (owner or allowed)
+    async findUserTasksPaginated(userId, page = 1, limit = 10) {
+        const { skip, take } = getPagination(page, limit);
+        const where = {
+            OR: [
+                { userId: userId },
+                { allowedUsers: { some: { id: userId } } }
+            ]
+        };
+        const [data, total] = await prisma.$transaction([
+            prisma.task.findMany({
+                where,
+                skip,
+                take,
+                orderBy: { createdAt: 'desc' },
+                include: { user: true, allowedUsers: true }
+            }),
+            prisma.task.count({ where })
+        ]);
+        return { data, total };
     }
     async findById(id) {
         return await prisma.task.findUnique({
             where: { id },
-            include: { allowedUsers: true }
+            include: {
+                allowedUsers: true,
+                user: true // Inclure les informations du propriétaire
+            }
         });
     }
     async update(id, classe) {
@@ -36,6 +94,16 @@ export class TaskRepository {
                 },
             },
             include: { allowedUsers: true }
+        });
+    }
+    async updateEtat(id, etat) {
+        return await prisma.task.update({
+            where: { id },
+            data: { etat },
+            include: {
+                user: true,
+                allowedUsers: true
+            }
         });
     }
 }

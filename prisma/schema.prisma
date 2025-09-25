@@ -18,24 +18,61 @@ enum Etat {
   TERMINER
 }
 
-model Task{
-
-  id Int @id @default(autoincrement())
-  titre String
-  description String
-  etat Etat @default(ENCOURS)
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  allowedUsers User[] @relation("AllowedTasks")
-  photo        String?  // <-- photo (optionnelle)
-
+enum ActionType {
+  CREATE
+  READ
+  UPDATE
+  DELETE
 }
 
-model User{
-    id Int @id @default(autoincrement())
-    nom String
-    email String @unique
-    password String
-    tasks Task[]
-  allowedTasks Task[] @relation("AllowedTasks")
+model Task {
+  id           Int      @id @default(autoincrement())
+  titre        String
+  description  String
+  etat         Etat     @default(ENCOURS)
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  allowedUsers User[]   @relation("AllowedTasks")
+  photo        String? // <-- photo (optionnelle)
+  audio           String?
+  startDate    DateTime? 
+  endDate      DateTime? 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation inverse avec ActionHistory
+  actionHistories ActionHistory[]
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  nom          String
+  email        String   @unique
+  password     String
+  tasks        Task[]
+  allowedTasks Task[]   @relation("AllowedTasks")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation inverse avec ActionHistory
+  actionHistories ActionHistory[]
+}
+
+
+model ActionHistory {
+  id        Int        @id @default(autoincrement())
+  action    ActionType
+  details   String?    // Allow null explicitly
+  createdAt DateTime   @default(now())
+
+  // relations
+  taskId Int
+  task   Task @relation(fields: [taskId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  @@index([taskId])
+  @@index([userId])
+  @@index([createdAt])
 }

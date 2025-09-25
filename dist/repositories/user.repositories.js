@@ -11,5 +11,13 @@ export class userRepository {
             where: { email }
         });
     }
+    async findbyid(id) {
+        return await prisma.user.findUnique({
+            where: { id }
+        });
+    }
+    async findAll() {
+        return await prisma.user.findMany();
+    }
 }
 //# sourceMappingURL=user.repositories.js.map

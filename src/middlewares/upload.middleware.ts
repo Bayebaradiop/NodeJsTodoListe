@@ -15,8 +15,11 @@ const storage = multer.diskStorage({
 });
 
 function fileFilter(_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) {
-  if (file.mimetype.startsWith("image/")) cb(null, true);
-  else cb(new Error("Seulement les images sont autorisées !"));
+  if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("audio/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Seulement les images et fichiers audio sont autorisés !"));
+  }
 }
 
 export const upload = multer({ storage, fileFilter });

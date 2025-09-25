@@ -13,10 +13,12 @@ const storage = multer.diskStorage({
     },
 });
 function fileFilter(_req, file, cb) {
-    if (file.mimetype.startsWith("image/"))
+    if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("audio/")) {
         cb(null, true);
-    else
-        cb(new Error("Seulement les images sont autorisées !"));
+    }
+    else {
+        cb(new Error("Seulement les images et fichiers audio sont autorisés !"));
+    }
 }
 export const upload = multer({ storage, fileFilter });
 export default upload;
