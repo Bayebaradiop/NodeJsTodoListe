@@ -11,7 +11,7 @@
     "serve": "node dist/server.js",
     "dev-build": "npm run build && npm run serve",
     "prisma:setup": "npx prisma generate && npx prisma migrate dev",
-    "seed": "npx ts-node --esm prisma/seed.ts",
+    "seed": "tsx prisma/seed.ts",
     "prisma:studio": "npx prisma studio",
     "prisma:reset": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",

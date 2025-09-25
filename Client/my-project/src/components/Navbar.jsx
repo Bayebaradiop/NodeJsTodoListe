@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { LogOut, User, Home, ListTodo, BarChart3 } from 'lucide-react';
 import Button from './Button.jsx';
+import NotificationBell from './NotificationBell.jsx';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -58,6 +59,8 @@ const Navbar = () => {
 
           {/* Menu utilisateur */}
           <div className="flex items-center space-x-4">
+            <NotificationBell />
+
             <div className="flex items-center space-x-2">
               <User className="h-5 w-5 text-gray-500" />
               <span className="text-sm text-gray-700">{user?.nom} {user?.prenom}</span>

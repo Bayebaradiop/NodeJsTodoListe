@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { tasksService } from '../services/tasks.js';
 import { useAuth } from './AuthContext.jsx';
+import { useNotifications } from './NotificationContext.jsx';
 
 const TasksContext = createContext();
 
@@ -14,6 +15,7 @@ export const useTasks = () => {
 
 export const TasksProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  const { addNotification } = useNotifications();
   const [tasks, setTasks] = useState([]);
   const [userTasks, setUserTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +41,18 @@ export const TasksProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const data = await tasksService.getUserTasks();
+
+      // Vérifier les tâches auto-complétées et déclencher des notifications
+      data.forEach(task => {
+        if (task.autoCompleted) {
+          addNotification({
+            type: 'auto_complete',
+            title: 'Tâche terminée automatiquement',
+            message: `"${task.titre}" a été marquée comme terminée car sa date d'échéance était dépassée.`
+          });
+        }
+      });
+
       setUserTasks(data);
     } catch (error) {
       setError(error.response?.data?.message || 'Erreur lors de la récupération de vos tâches');

@@ -55,6 +55,7 @@ async function main() {
       userId: user1.id,
       startDate: new Date(now.getTime() + 2 * 60 * 60 * 1000), // Dans 2h
       endDate: new Date(now.getTime() + 4 * 60 * 60 * 1000),   // Dans 4h
+      photo: '/uploads/1757886351864-36789fm4.jpg',
     },
   });
 
@@ -77,6 +78,7 @@ async function main() {
       userId: user2.id,
       startDate: tomorrow,
       endDate: nextWeek,
+      audio: '/uploads/1758725814039-qdbm6lhu.ogg',
     },
   });
 
@@ -91,6 +93,7 @@ async function main() {
       },
       startDate: new Date(now.getTime() + 6 * 60 * 60 * 1000), // Dans 6h
       endDate: new Date(now.getTime() + 8 * 60 * 60 * 1000),   // Dans 8h
+      photo: '/uploads/1758493682016-9k8rahp7.jpg',
     },
   });
 
@@ -102,6 +105,7 @@ async function main() {
       userId: user3.id,
       startDate: new Date(now.getTime() - 3 * 60 * 60 * 1000), // Il y a 3h
       endDate: new Date(now.getTime() - 1 * 60 * 60 * 1000),   // Il y a 1h
+      audio: '/uploads/1758728638752-a44fjvcn.webm',
     },
   });
 

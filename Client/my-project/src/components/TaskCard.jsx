@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Calendar, User, Eye, Edit, Trash2, Clock, CheckCircle, Volume2 } from 'lucide-react';
 import Button from './Button.jsx';
+import CountdownTimer from './CountdownTimer.jsx';
 
 const TaskCard = ({ task, showActions = false, onEdit, onDelete, onUpdateState }) => {
   const getStateColor = (etat) => {
@@ -37,6 +38,13 @@ const TaskCard = ({ task, showActions = false, onEdit, onDelete, onUpdateState }
           <span className="ml-1">{task.etat}</span>
         </div>
       </div>
+
+      {/* Timer de compte à rebours */}
+      {task.endDate && task.etat !== 'TERMINER' && (
+        <div className="mb-3">
+          <CountdownTimer endDate={task.endDate} isCompleted={task.etat === 'TERMINER'} />
+        </div>
+      )}
 
       {/* Description */}
       {task.description && (

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { TaskRepository } from "../repositories/taskrepository.js";
+import { calculateTimeDifference, formatTimeDifference } from "./timeUtils.js";
 const prisma = new PrismaClient();
 const taskrepository = new TaskRepository();
 export class TaskService {
@@ -34,25 +35,8 @@ export class TaskService {
         return await taskrepository.updateEtat(id, etat);
     }
     calculateDuration(startDate, endDate) {
-        if (!startDate || !endDate) {
-            return null;
-        }
-        const diffMs = endDate.getTime() - startDate.getTime();
-        if (diffMs <= 0) {
-            return null;
-        }
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        if (diffDays > 0) {
-            return `${diffDays}j ${diffHours}h ${diffMinutes}min`;
-        }
-        else if (diffHours > 0) {
-            return `${diffHours}h ${diffMinutes}min`;
-        }
-        else {
-            return `${diffMinutes}min`;
-        }
+        const timeDiff = calculateTimeDifference(startDate, endDate);
+        return formatTimeDifference(timeDiff);
     }
     async autoCompleteExpiredTasks(tasks) {
         const now = new Date();

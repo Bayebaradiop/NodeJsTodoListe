@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, Edit, Trash2, Clock, CheckCircle, User, 
-  Calendar, UserPlus, Image as ImageIcon 
+import {
+  ArrowLeft, Edit, Trash2, Clock, CheckCircle, User,
+  Calendar, UserPlus, Image as ImageIcon
 } from 'lucide-react';
 import { useTaskDetail } from '../hooks/useTasksEffect.jsx';
 import { useTasks } from '../context/TasksContext.jsx';
@@ -12,6 +12,7 @@ import Button from '../components/Button.jsx';
 import Input from '../components/Input.jsx';
 import Navbar from '../components/Navbar.jsx';
 import UserSelector from '../components/UserSelector.jsx';
+import CountdownTimer from '../components/CountdownTimer.jsx';
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -221,6 +222,11 @@ const TaskDetail = () => {
                   {getStateIcon(task.etat)}
                   <span className="ml-2">{task.etat}</span>
                 </div>
+
+                {/* Timer de compte à rebours */}
+                {task.endDate && task.etat !== 'TERMINER' && (
+                  <CountdownTimer endDate={task.endDate} isCompleted={task.etat === 'TERMINER'} />
+                )}
               </div>
             </div>
           </div>

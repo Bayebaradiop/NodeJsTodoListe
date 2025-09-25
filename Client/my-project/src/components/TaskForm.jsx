@@ -129,11 +129,14 @@ const TaskForm = ({ task = null, onSubmit, onCancel, loading = false }) => {
       return;
     }
 
-    // Convertir les dates datetime-local en format ISO complet pour Prisma
+    // Convertir les dates datetime-local en format ISO complet pour Prisma avec secondes actuelles
+    const now = new Date();
+    const currentSeconds = now.getSeconds().toString().padStart(2, '0');
+
     const submitData = {
       ...formData,
-      ...(formData.startDate && { startDate: new Date(`${formData.startDate}:00`).toISOString() }),
-      ...(formData.endDate && { endDate: new Date(`${formData.endDate}:00`).toISOString() })
+      ...(formData.startDate && { startDate: new Date(`${formData.startDate}:${currentSeconds}`).toISOString() }),
+      ...(formData.endDate && { endDate: new Date(`${formData.endDate}:${currentSeconds}`).toISOString() })
     };
 
     try {

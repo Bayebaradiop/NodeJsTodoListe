@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { TasksProvider } from './context/TasksContext.jsx';
+import { NotificationProvider } from './context/NotificationContext.jsx';
 import { useAuth } from './hooks/useAuth.jsx';
 
 // Pages
@@ -96,11 +97,13 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <TasksProvider>
-          <div className="App">
-            <AppRoutes />
-          </div>
-        </TasksProvider>
+        <NotificationProvider>
+          <TasksProvider>
+            <div className="App">
+              <AppRoutes />
+            </div>
+          </TasksProvider>
+        </NotificationProvider>
       </AuthProvider>
     </Router>
   );
